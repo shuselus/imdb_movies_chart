@@ -1,33 +1,28 @@
-import React, { useEffect, useState, memo } from "react";
-import { nanoid } from 'nanoid'
+import React, { useEffect, useState, useRef, memo } from "react";
 import Cell from "./Cell";
+import { contextTable } from './Grid';
 
-const Row = ({data, isHeader = false, isColored = false}) => {
-    const [rowData, setRowData] = useState([])
+const Row = ({rowId, data, isHeader = false, isColored = false}) => {
+    const [rowData, setRowData] = useState([...data]); 
+    const rowRef = useRef(null);
+    const contextData = React.useContext(contextTable);
 
     useEffect(() =>{
-        //console.log("Row>>data>>>>", data);
-        if(data){
-            const _data = [];
-            for(const key in data){
-                console.log("rowData>>>>",key,  data[key]);
-                _data.push({id: nanoid(), title: key, value: data[key]})
-            }
-            setRowData(_data);
-        }
-        //setRowData(data);
-   },[data])
+         console.log("rowData>>>", rowData);
+   },[rowData]);
 
-    return (
-        <div className={`grid highlite ${isColored && "colored"}`}>
-            {
-            rowData?.length &&
-                rowData.map((item) => 
-                    <Cell key={item.id} data={item}/>)
-            }
     
+    return (
+        <div className={`row-grid ${isColored ? "colored" : ""}`} 
+            ref={rowRef}
+            onClick={()=> contextData.selectRow(rowRef.current)}>
+            {
+                rowData?.length &&
+                    rowData.map((item) => 
+                        <Cell key={item.id} data={item.fieldName === "Remove" ? {...item, rowId: rowId} : item}/>)
+            }
         </div>
     )
 }
 
-export default memo(Row)
+export default Row
