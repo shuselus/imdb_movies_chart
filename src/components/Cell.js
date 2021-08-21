@@ -1,9 +1,11 @@
-import React, {useState, useEffect, memo} from 'react';
+import React,{ memo } from 'react';
 import Trailer from "./Trailer";
 import DeleteButton from "./DeleteButton";
 
 const Cell = ({data}) => {
     const getTxtAligmentClass = () => data.fieldName === "Title" ? "jstfy-l" : "";
+
+    //console.log("Cell", data);
     
     const displayMatched = () => {
         if(data.fieldName === "Trailer"){
@@ -26,10 +28,3 @@ const Cell = ({data}) => {
 }
 
 export default memo(Cell)
-
-
-// value === "Trailer" ?
-// <Trailer url={data.value.url}/> :
-// value === "Remove" ?
-// <DeleteButton rowId={data.rowId} /> : 
-// <span>{value}</span>

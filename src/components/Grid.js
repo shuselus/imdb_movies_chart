@@ -5,7 +5,6 @@ import Row from "./Row";
 export const contextTable = React.createContext(null);
 let isColored = false;
 
-
 const Grid = ({ columnDefinitions, data }) => {
   const [rowsData, setRowsData] = useState([]);
   const [columnsData, setColumnsData] = useState([]);
@@ -13,26 +12,26 @@ const Grid = ({ columnDefinitions, data }) => {
   const tableRef = useRef(null);
 
   useEffect(() => {
+    //set colomns
       setColumnsData(() => columnDefinitions.map(item =>{
         item.id = nanoid();
         return item;
       }));
-   },[columnDefinitions]);
 
-  useEffect(() => {
-    if (data?.length) {
-       setRowsData(()=>{
-          return data.map(item => 
-                  columnDefinitions.map(({fieldName}) => (
-                  {id: nanoid(), fieldName: fieldName, value:item[fieldName] ? item[fieldName] : fieldName}
-                )));
-          })
-    }
-  }, [data]);
+      //sort by raiting
+      const _data = data.sort((a, b) => b.imdbRating - a.imdbRating, 0);
 
+      //set rows
+      setRowsData(() => _data.map(item => 
+        columnDefinitions.map(({fieldName}) => 
+          ({id: nanoid(), fieldName: fieldName, value:item[fieldName] ? item[fieldName] : fieldName})
+      ))); 
+  },[data, columnDefinitions]);
+
+  
+  //highlite - unhighite rows
   const selectRow = useCallback((row=null) =>{
     if(row){
-      //console.log("row>>>>",  row);
       const selected = [...tableRef.current.getElementsByClassName("selected-row")];
       selected.forEach(item => {
         item.classList.remove('selected-row');
@@ -51,7 +50,7 @@ const Grid = ({ columnDefinitions, data }) => {
 
   return (
     <contextTable.Provider value={{selectRow, deleteRow}}>
-      <div className="grid-container" >
+      <div className="grid-container shadow" >
         <div className="scroll-container" ref={tableRef}>
           <div className="row-grid header-row">
           {

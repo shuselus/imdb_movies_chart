@@ -4,7 +4,7 @@ import { ReactComponent as DeleteIcon } from '../svgs/deleteIcon.svg'
 
 const DeleteButton = ({rowId}) => {
     const contextData = React.useContext(contextTable);
-
+    
     const onClickHandler = (e) => {
        e.stopPropagation();
        contextData.deleteRow(rowId);

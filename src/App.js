@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Grid from "./components/Grid";
-
+import Header from "./components/Header";
 
 const columnDefinitions = [
   {
@@ -20,31 +20,17 @@ const columnDefinitions = [
     fieldName: "Trailer",
     //component: <Trailer/>
   },
-   {
-     title: "remove",
-     fieldName: "Remove"
-   }
+  {
+    title: "remove",
+    fieldName: "Remove",
+    //component: <DeleteButton/>
+  }
 ];
 
-
 const App = ({ data }) => {
-  
-  //useEffect(() => {
-    // console.log("entire data:", data);
-    // const _columnDefinitions = Object.keys(data[0]).map((item) => {
-    //   return {
-    //     title: item.toLowerCase(),
-    //     fieldName: item
-    //   };
-    // });
-    // setColumnDefinitions(_columnDefinitions);
-    // console.log("_columnDefinitions>>>", _columnDefinitions);
-
-    //setGridData()
-  //}, [data]);
-
   return (
     <div className="app-container">
+      <Header />
       <Grid columnDefinitions={columnDefinitions} data={data} />
     </div>
   );
